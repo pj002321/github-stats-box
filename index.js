@@ -70,9 +70,11 @@ async function updateGist(stats) {
             ['📦', `Contributed to`, humanize(stats.contributedTo)],
         ]
             .map((content) => {
-                let line = `${content[1]}:${content[2]}`;
-                line = line.replace(':', ':' + ' '.repeat(45 - line.length));
-                line = `${content[0]}    ${line}`;
+                // ponytail: fixed pad width (was 45, sized for a wide terminal); GitHub's
+                // pinned-gist card is much narrower, so the value used to render off-screen.
+                // 20 keeps every label+value pair inside the card.
+                let line = `${content[1]}:`.padEnd(20) + content[2];
+                line = `${content[0]}  ${line}`;
                 return line;
             })
             .join('\n') + '\n';
